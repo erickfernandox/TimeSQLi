@@ -91,6 +91,7 @@ func testarURLs(tempoSQLi float64, payloads []string) {
                                             tempoRetorno3 := medirTempoRequisicao(url_zero)
                                             if tempoRetorno3 < tempoSQLi {
                                                 fmt.Printf("%sVulnerable: %s%s - R1: {%f} - R2:{%f} - R3:{%f}\n", red, url_teste, reset, tempoRetorno, tempoRetorno2, tempoRetorno3)
+						break
                                             }   
                                         }
                                 }
